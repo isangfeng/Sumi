@@ -10,6 +10,9 @@ public enum MarkdownFormatStyle: Equatable {
     case blockquote
     case codeBlock
     case link
+    case image
+    case table
+    case horizontalRule
 }
 
 public struct MarkdownFormatResult: Equatable {
@@ -38,7 +41,37 @@ public enum MarkdownFormatting {
             wrap(text, selection: selection, prefix: "```\n", suffix: "\n```", placeholder: "code")
         case .link:
             wrap(text, selection: selection, prefix: "[", suffix: "](https://)", placeholder: "link text")
+        case .image:
+            wrap(text, selection: selection, prefix: "![", suffix: "](https://)", placeholder: "alt text")
+        case .table:
+            insertTable(text, selection: selection)
+        case .horizontalRule:
+            insertHorizontalRule(text, selection: selection)
         }
+    }
+
+    private static func insertTable(_ text: String, selection: NSRange) -> MarkdownFormatResult {
+        let template = "| Header | Header |\n| --- | --- |\n| Cell | Cell |"
+        let storage = NSMutableString(string: text)
+        storage.replaceCharacters(in: selection, with: template)
+
+        let headerLocation = selection.location + 2
+        return MarkdownFormatResult(
+            text: storage as String,
+            selection: NSRange(location: headerLocation, length: 6)
+        )
+    }
+
+    private static func insertHorizontalRule(_ text: String, selection: NSRange) -> MarkdownFormatResult {
+        let insertion = "\n\n---\n\n"
+        let storage = NSMutableString(string: text)
+        storage.replaceCharacters(in: selection, with: insertion)
+
+        let cursor = selection.location + (insertion as NSString).length
+        return MarkdownFormatResult(
+            text: storage as String,
+            selection: NSRange(location: cursor, length: 0)
+        )
     }
 
     private static func wrap(

@@ -46,26 +46,26 @@ jobs:
 
       - name: Build DMG
         env:
-          MARKDOWNSTUDIO_VERSION: ${{ github.ref_name }}
-          MARKDOWNSTUDIO_BUILD: ${{ github.run_number }}
-          MARKDOWNSTUDIO_CODE_SIGN_IDENTITY: ${{ env.APPLE_CODESIGN_IDENTITY || '-' }}
+          SUMI_VERSION: ${{ github.ref_name }}
+          SUMI_BUILD: ${{ github.run_number }}
+          SUMI_CODE_SIGN_IDENTITY: ${{ env.APPLE_CODESIGN_IDENTITY || '-' }}
         run: |
-          export MARKDOWNSTUDIO_VERSION="${MARKDOWNSTUDIO_VERSION#v}"
+          export SUMI_VERSION="${SUMI_VERSION#v}"
           ./scripts/make-release-dmg.sh
 
       - name: Notarize DMG
         if: env.APPLE_ID != '' && env.APPLE_APP_SPECIFIC_PASSWORD != '' && env.APPLE_TEAM_ID != ''
         run: |
-          xcrun notarytool submit .build/dist/MarkdownStudio.dmg \
+          xcrun notarytool submit .build/dist/Sumi.dmg \
             --apple-id "$APPLE_ID" \
             --password "$APPLE_APP_SPECIFIC_PASSWORD" \
             --team-id "$APPLE_TEAM_ID" \
             --wait
-          xcrun stapler staple .build/dist/MarkdownStudio.dmg
+          xcrun stapler staple .build/dist/Sumi.dmg
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: MarkdownStudio ${{ github.ref_name }}
-          body: Download MarkdownStudio.dmg, open it, and drag MarkdownStudio.app to Applications.
-          files: .build/dist/MarkdownStudio.dmg
+          name: Sumi ${{ github.ref_name }}
+          body: Download Sumi.dmg, open it, and drag Sumi.app to Applications.
+          files: .build/dist/Sumi.dmg

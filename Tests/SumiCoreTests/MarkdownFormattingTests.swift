@@ -1,5 +1,5 @@
 import XCTest
-@testable import MarkdownStudioCore
+@testable import SumiCore
 
 final class MarkdownFormattingTests: XCTestCase {
     func testBoldWrapsSelection() {
@@ -51,5 +51,38 @@ final class MarkdownFormattingTests: XCTestCase {
 
         XCTAssertEqual(result.text, "*中文* English")
         XCTAssertEqual((result.text as NSString).substring(with: result.selection), "中文")
+    }
+
+    func testImageInsertsPlaceholderForEmptySelection() {
+        let result = MarkdownFormatting.apply(
+            style: .image,
+            to: "Hello ",
+            selection: NSRange(location: 6, length: 0)
+        )
+
+        XCTAssertEqual(result.text, "Hello ![alt text](https://)")
+        XCTAssertEqual(result.selection, NSRange(location: 8, length: 8))
+    }
+
+    func testTableInsertsTemplateAndSelectsFirstHeader() {
+        let result = MarkdownFormatting.apply(
+            style: .table,
+            to: "",
+            selection: NSRange(location: 0, length: 0)
+        )
+
+        XCTAssertEqual(result.text, "| Header | Header |\n| --- | --- |\n| Cell | Cell |")
+        XCTAssertEqual((result.text as NSString).substring(with: result.selection), "Header")
+    }
+
+    func testHorizontalRuleInsertsOnItsOwnLines() {
+        let result = MarkdownFormatting.apply(
+            style: .horizontalRule,
+            to: "Before",
+            selection: NSRange(location: 6, length: 0)
+        )
+
+        XCTAssertEqual(result.text, "Before\n\n---\n\n")
+        XCTAssertEqual(result.selection, NSRange(location: 13, length: 0))
     }
 }

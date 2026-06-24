@@ -1,5 +1,5 @@
 import XCTest
-@testable import MarkdownStudioCore
+@testable import SumiCore
 
 final class MarkdownOutlineTests: XCTestCase {
     func testParseAtxHeadings() {

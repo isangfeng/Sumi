@@ -2,19 +2,19 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-APP_DIR="$ROOT_DIR/.build/MarkdownStudio.app"
+APP_DIR="$ROOT_DIR/.build/Sumi.app"
 CONTENTS_DIR="$APP_DIR/Contents"
 MACOS_DIR="$CONTENTS_DIR/MacOS"
 FRAMEWORKS_DIR="$CONTENTS_DIR/Frameworks"
 RESOURCES_DIR="$CONTENTS_DIR/Resources"
-EXECUTABLE="${MARKDOWNSTUDIO_EXECUTABLE:-$ROOT_DIR/.build/release/MarkdownStudio}"
-APP_ICON="$ROOT_DIR/Sources/MarkdownStudio/Resources/AppIcon.icns"
-APP_VERSION="${MARKDOWNSTUDIO_VERSION:-0.1.0}"
-APP_BUILD="${MARKDOWNSTUDIO_BUILD:-1}"
-CODE_SIGN_IDENTITY="${MARKDOWNSTUDIO_CODE_SIGN_IDENTITY:--}"
+EXECUTABLE="${SUMI_EXECUTABLE:-$ROOT_DIR/.build/release/Sumi}"
+APP_ICON="$ROOT_DIR/Sources/Sumi/Resources/AppIcon.icns"
+APP_VERSION="${SUMI_VERSION:-0.1.0}"
+APP_BUILD="${SUMI_BUILD:-1}"
+CODE_SIGN_IDENTITY="${SUMI_CODE_SIGN_IDENTITY:--}"
 
 if [[ ! -x "$EXECUTABLE" ]]; then
-  EXECUTABLE="$ROOT_DIR/.build/debug/MarkdownStudio"
+  EXECUTABLE="$ROOT_DIR/.build/debug/Sumi"
 fi
 
 if [[ ! -x "$EXECUTABLE" ]]; then
@@ -25,14 +25,14 @@ fi
 
 rm -rf "$APP_DIR"
 mkdir -p "$MACOS_DIR" "$FRAMEWORKS_DIR" "$RESOURCES_DIR"
-cp "$EXECUTABLE" "$MACOS_DIR/MarkdownStudio"
+cp "$EXECUTABLE" "$MACOS_DIR/Sumi"
 cp "$APP_ICON" "$RESOURCES_DIR/AppIcon.icns"
-install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_DIR/MarkdownStudio" 2>/dev/null || true
-install_name_tool -delete_rpath "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-6.2/macosx" "$MACOS_DIR/MarkdownStudio" 2>/dev/null || true
+install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_DIR/Sumi" 2>/dev/null || true
+install_name_tool -delete_rpath "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-6.2/macosx" "$MACOS_DIR/Sumi" 2>/dev/null || true
 
 xcrun swift-stdlib-tool \
   --copy \
-  --scan-executable "$MACOS_DIR/MarkdownStudio" \
+  --scan-executable "$MACOS_DIR/Sumi" \
   --platform macosx \
   --unsigned-destination "$FRAMEWORKS_DIR" \
   >/dev/null
@@ -46,15 +46,15 @@ cat > "$CONTENTS_DIR/Info.plist" <<PLIST
   <key>CFBundleDevelopmentRegion</key>
   <string>en</string>
   <key>CFBundleExecutable</key>
-  <string>MarkdownStudio</string>
+  <string>Sumi</string>
   <key>CFBundleIdentifier</key>
-  <string>local.markdownstudio.app</string>
+  <string>local.sumi.app</string>
   <key>CFBundleIconFile</key>
   <string>AppIcon</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundleName</key>
-  <string>MarkdownStudio</string>
+  <string>Sumi</string>
   <key>CFBundlePackageType</key>
   <string>APPL</string>
   <key>CFBundleShortVersionString</key>

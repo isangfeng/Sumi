@@ -3,23 +3,23 @@
 import PackageDescription
 
 let package = Package(
-    name: "MarkdownStudio",
+    name: "Sumi",
     platforms: [
         .macOS(.v14)
     ],
     products: [
-        .executable(name: "MarkdownStudio", targets: ["MarkdownStudio"])
+        .executable(name: "Sumi", targets: ["Sumi"])
     ],
     targets: [
-        .target(name: "MarkdownStudioCore"),
+        .target(name: "SumiCore"),
         .executableTarget(
-            name: "MarkdownStudio",
-            dependencies: ["MarkdownStudioCore"],
+            name: "Sumi",
+            dependencies: ["SumiCore"],
             resources: [.copy("Resources")]
         ),
         .testTarget(
-            name: "MarkdownStudioCoreTests",
-            dependencies: ["MarkdownStudioCore"]
+            name: "SumiCoreTests",
+            dependencies: ["SumiCore"]
         )
     ]
 )

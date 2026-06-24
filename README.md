@@ -1,4 +1,4 @@
-# MarkdownStudio
+# Sumi
 
 A focused native macOS Markdown editor.
 
@@ -6,8 +6,11 @@ The app intentionally keeps the scope small:
 
 - Native macOS window, toolbar, sidebar, file dialogs, and text editing.
 - Typora-style single writing surface with a centered readable column.
-- Markdown syntax highlighting and common formatting commands.
-- Local `.md` file open/save and recent documents.
+- Native macOS window tabs: each open document is its own window, tabbed together
+  by the system once 2+ are open.
+- Markdown syntax highlighting and common formatting commands, plus an Insert
+  menu for links, images, tables, and other common Markdown elements.
+- Local `.md` file open/save, with a native Open-or-New chooser at launch.
 - No PDF export, no Typst/Rust pipeline, no pagination.
 
 The app has no bundled editing engine dependency. The bundle script copies Swift runtime libraries into `.app/Contents/Frameworks` when Xcode reports they are needed. AppKit and SwiftUI remain macOS system frameworks and are not copied into the app bundle.
@@ -18,7 +21,7 @@ The app has no bundled editing engine dependency. The bundle script copies Swift
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer swift build -c release
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer swift test
 ./scripts/make-app-bundle.sh
-open .build/MarkdownStudio.app
+open .build/Sumi.app
 ```
 
 ## Release Package
@@ -32,7 +35,7 @@ Create a downloadable macOS disk image:
 The generated installer-style package is:
 
 ```text
-.build/dist/MarkdownStudio.dmg
+.build/dist/Sumi.dmg
 ```
 
 Release DMGs contain a universal app binary for both Intel (`x86_64`) and Apple
